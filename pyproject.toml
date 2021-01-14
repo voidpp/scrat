@@ -23,6 +23,8 @@ wows-api-async = "^0.1.0"
 [tool.poetry.dev-dependencies]
 invoke = "^1.5.0"
 livereload = "^2.6.3"
+pytest = "^6.2.1"
+pytest-watch = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
