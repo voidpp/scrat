@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="/static/bulma.min.css">
+    <link rel="stylesheet" href="/static/bulma-prefers-dark.css"/>
+</head>
+<body>
+<div class="container pt-2">
+    <div class="is-flex is-justify-content-center is-align-items-center">
+        <figure class="image is-64x64">
+            <img class="is-rounded" src="/static/scrat-128.jpg">
+        </figure>
+        <div class="ml-3">
+            <div class="title">
+                Scrat
+            </div>
+            <div class="subtitle">
+                WoWs Discord bot
+            </div>
+        </div>
+    </div>
+    <div class="navbar-divider"></div>
+    <div class="navbar">
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    Home
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

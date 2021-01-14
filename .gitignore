@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+*.log
+
+*egg-info*
+.coverage
+cover/
+dist/
+
+htmlcov
+scrat.yaml
+scrat/web/static/bulma-prefers-dark.css
+scrat/web/static/bulma.min.css
