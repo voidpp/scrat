@@ -13,6 +13,7 @@ from .commands.base import COMMAND_PREFIX, CommandBase
 from .commands.command_list import CommandList
 from .commands.last_battle_times import LastBattleTimes
 from .commands.link import Link
+from .commands.online_players import OnlinePlayers
 from .context import Context
 
 config = load()
@@ -45,10 +46,11 @@ async def on_ready():
 
 
 commands: list[type[CommandBase]] = [
+    CommandList,
     LastBattleTimes,
     Link,
     Unlink,
-    CommandList,
+    OnlinePlayers,
 ]
 
 CommandList.commands = commands
