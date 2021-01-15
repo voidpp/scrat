@@ -1,11 +1,13 @@
 from argparse import ArgumentParser
+from enum import Enum
 
 from pydantic import BaseModel
 from pydantic.fields import ModelField
 
+from scrat.bot.tools import ArgEnumField
+
 
 def add_to_parser(parser: ArgumentParser, model: type[BaseModel]):
-
     required_fields: list[ModelField] = []
     optional_fields: list[ModelField] = []
 
@@ -21,10 +23,20 @@ def add_to_parser(parser: ArgumentParser, model: type[BaseModel]):
         parser.add_argument(field.name, type = field.type_)
 
     for field in optional_fields:
-        params = ["--" + field.name]
+        kwargs = {
+            "type": field.type_,
+            "default": field.default,
+        }
+        args = ["--" + field.name]
         one_letter_param = field.name[:1]
         if one_letter_param not in used_one_letter_params:
-            params.append("-" + one_letter_param)
+            args.append("-" + one_letter_param)
             used_one_letter_params.append(one_letter_param)
 
-        parser.add_argument(*params, type = field.type_, default = field.default)
+        if field.field_info.description:
+            kwargs["help"] = field.field_info.description
+
+        if issubclass(type(field.field_info), ArgEnumField):
+            kwargs["choices"] = field.field_info.choices
+
+        parser.add_argument(*args, **kwargs)

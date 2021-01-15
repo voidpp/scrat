@@ -4,11 +4,13 @@ from discord import Client, Message
 from wows_api_async import Wows
 from wows_api_async.cache.redis import RedisCache
 
+from scrat.bot.commands.unlink import Unlink
 from scrat.components.argument_parser import GentleArgumentParserError
 from scrat.components.config import load
 from scrat.components.database import Database
 from scrat.components.link_cache import LinkCache
 from .commands.base import COMMAND_PREFIX, CommandBase
+from .commands.command_list import CommandList
 from .commands.last_battle_times import LastBattleTimes
 from .commands.link import Link
 from .context import Context
@@ -45,7 +47,11 @@ async def on_ready():
 commands: list[type[CommandBase]] = [
     LastBattleTimes,
     Link,
+    Unlink,
+    CommandList,
 ]
+
+CommandList.commands = commands
 
 
 @discord_client.event

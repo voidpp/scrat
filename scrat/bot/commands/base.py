@@ -5,6 +5,7 @@ from typing import TypeVar, Generic, Type
 
 from discord import Message
 from pydantic import BaseModel
+
 from scrat.bot.context import Context
 from scrat.components.argument_parser import GentleArgumentParser, HelpAction
 from scrat.components.pydantic_argparse import add_to_parser
@@ -21,6 +22,7 @@ class NoArgumentsDefinedError(Exception):
 class CommandBase(ABC, Generic[InputType]):
     name: str
     input_validator: Type[BaseModel] = None
+    description: str
     _message: Message
     _input_kwargs: dict
 
@@ -33,6 +35,9 @@ class CommandBase(ABC, Generic[InputType]):
     @abstractmethod
     async def process(self):
         pass
+
+    async def send(self, message: str):
+        await self._message.channel.send(message)
 
     @property
     def args(self) -> InputType:

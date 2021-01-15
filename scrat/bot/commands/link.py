@@ -6,6 +6,7 @@ from ...constants import REDIRECT_TOKEN_KEY, Route
 
 class Link(CommandBase):
     name = "link"
+    description = "Creates a link between wargaming and your discord account"
 
     async def process(self):
         await self._message.channel.send("Check your private messages to continue.")

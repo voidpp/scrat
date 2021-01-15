@@ -5,9 +5,24 @@ from pydantic import BaseModel
 from tabulate import tabulate
 
 from .base import CommandBase
+from ..tools import ArgEnumField
 from ...models import Link
 
 logger = logging.getLogger(__name__)
+
+ship_type_map = {
+    "Battleship": ["bb"],
+    "Cruiser": ["ca", "cl"],
+    "Destroyer": ["dd"],
+    "AirCarrier": ["cv"],
+}
+
+ship_types_reverse_map = {}
+for ship_type, shorts in ship_type_map.items():
+    ship_types_reverse_map.update({s: ship_type for s in shorts})
+    ship_types_reverse_map[ship_type.lower()] = ship_type
+
+choices = list(ship_types_reverse_map.keys())
 
 
 class LastBattleTimesInput(BaseModel):
@@ -15,13 +30,16 @@ class LastBattleTimesInput(BaseModel):
     tier: int = None
     limit: int = 20
     ship: str = None
+    type: str = ArgEnumField(None, choices)
 
 
 class LastBattleTimes(CommandBase[LastBattleTimesInput]):
     name = "last-battle-times"
     input_validator = LastBattleTimesInput
+    description = "Show last battle times for a user"
 
     async def get_user_from_wows(self) -> int:
+        # TODO: cache exact matches (locally)
         users = await self._context.wows_client.account.list_(self.args.user)
         logger.debug("Search users %s: matches: %s", self.args.user, users)
 
@@ -86,6 +104,11 @@ class LastBattleTimes(CommandBase[LastBattleTimesInput]):
 
             if self.args.ship and not ship_details.name.lower().startswith(self.args.ship.lower()):
                 continue
+
+            if self.args.type:
+                type_ = ship_types_reverse_map[self.args.type]
+                if type_ != ship_details.type:
+                    continue
 
             table_rows.append([
                 ship_details.name,
